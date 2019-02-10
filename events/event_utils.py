@@ -1,0 +1,124 @@
+## Python Standard Library
+import sys
+import os
+
+## External Dependencies
+from psychopy import core, gui, visual, event
+
+def build_window(
+	window_size = 'full',
+	window_color = [1,1,1],
+):
+
+	if window_size == 'full':
+		return visual.Window(fullscr=True, units='pix', color=win_color)
+	else:
+		return visual.Window(win_size, units='pix', color=win_color)
+
+
+
+##__Wait for user response
+def wait_for_btn_response(cursor, timer, buttons, quit_keys=['escape']):
+	cursor.clickReset()
+	event.clearEvents()
+	timer.reset()
+
+	while cursor.getPressed() == [False, False, False]:
+		if event.getKeys(keyList=quit_keys):
+			print('user terminated')
+			core.quit()
+
+	while True:
+		if event.getKeys(keyList=quit_keys):
+			print('user terminated')
+			core.quit()
+		for btn in buttons:
+			if cursor.isPressedIn(buttons[btn]['box']):
+				return([btn, timer.getTime()])
+
+
+##__Wait for user response
+def wait_for_click_response(cursor, timer, quit_keys=['escape']):
+	cursor.clickReset()
+	event.clearEvents()
+	timer.reset()
+
+	while cursor.getPressed() == [False, False, False]:
+		if event.getKeys(keyList=quit_keys):
+			print('user terminated')
+			core.quit()
+	return(timer.getTime())
+
+
+## this recursively draws everything in a dictionary of items/dictionaries
+def draw_objects_in_bin(
+		window,
+		object_bin, 
+		object_list = None, 
+		flip = True,
+	):
+
+	if object_list == None:
+		for obj in object_bin:
+			if type(object_bin[obj]) == dict:
+				draw_objects_in_bin(window, object_bin[obj], flip=False)
+			else:
+				object_bin[obj].draw()
+
+	else:
+		for obj in object_list:
+			if type(object_bin[obj]) == dict:
+				draw_objects_in_bin(window, object_bin[obj], flip=False)
+			else:
+				object_bin[obj].draw()	
+
+	if flip == True:
+		window.flip()
+
+
+
+## this makes a row of n numer of buttons that are evenly spaced
+def make_button_row(
+		window, 	# psychopy window object (required argument)
+		labels = ['A', 'B'], 
+		ypos = -100, 
+		padding = 100,	# this determines how far apart butons will be evenly placed
+		btn_box_size = [200,75], 
+		btn_box_color = [0,0,0], 
+		btn_txt_size = 22,
+		btn_txt_color = [-1,-1,-1],
+		btn_txt_font = 'Consolas',
+	):
+
+	btn_set = {}
+
+	num_categories = len(labels)
+	btn_row_len = btn_box_size[0] * num_categories + padding * 2 * num_categories
+	btn_row_start = -btn_row_len / 2
+
+	for index, item in enumerate(labels):
+		btn_set[item] = {}
+		btn_set[item]['box'] = visual.Rect(
+				window, 
+				width = btn_box_size[0],
+				height = btn_box_size[1],
+				fillColor = btn_box_color,
+				lineColor = [-1,-1,-1],
+				pos = [btn_row_start + (btn_box_size[0] + padding * 2)/2 + (btn_box_size[0] + padding * 2) * index, ypos]
+				# ^ that is just annoying trial+error math to get the buttons evenly spaced
+			)
+		btn_set[item]['txt'] = visual.TextStim(
+				window,
+				text = item,
+				height = btn_txt_size,
+				color = btn_txt_color,
+				font = btn_txt_font,
+				pos = btn_set[item]['box'].pos
+			)
+
+	# print('----\n' + str(type(btn_set)), btn_set, '\n----')
+	return btn_set
+
+
+
+
