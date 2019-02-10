@@ -15,7 +15,7 @@ from psychopy import visual
 ## Internal Dependencies
 sys.path.append(os.path.abspath(os.path.join(__file__, '../../')))
 import utils
-from events import initializer, instructions, forced_choice_classification
+from events import initializer, instructions, classification
 
 
 
@@ -48,7 +48,7 @@ instructions.run(
 
 
 ##__train phase
-forced_choice_classification.run(
+classification.run(
 	['./materials/stim1.png', './materials/stim2.png'],
 	labels = ['A', 'B'],
 	stim_position = [0,100],
@@ -73,7 +73,7 @@ instructions.run(
 
 
 ##__test phase
-forced_choice_classification.run(
+classification.run(
 	['./materials/stim1.png', './materials/stim2.png'],
 	labels = ['A', 'B'],
 	stim_position = [0,100],
