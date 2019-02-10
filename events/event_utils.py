@@ -11,9 +11,9 @@ def build_window(
 ):
 
 	if window_size == 'full':
-		return visual.Window(fullscr=True, units='pix', color=win_color)
+		return visual.Window(fullscr=True, units='pix', color=window_color)
 	else:
-		return visual.Window(win_size, units='pix', color=win_color)
+		return visual.Window(window_size, units='pix', color=window_color)
 
 
 
@@ -50,11 +50,15 @@ def wait_for_click_response(cursor, timer, quit_keys=['escape']):
 	return(timer.getTime())
 
 
+##__Wait for user response
+
+
+
 ## this recursively draws everything in a dictionary of items/dictionaries
 def draw_objects_in_bin(
 		window,
-		object_bin, 
-		object_list = None, 
+		object_bin,
+		object_list = None,
 		flip = True,
 	):
 
@@ -70,7 +74,7 @@ def draw_objects_in_bin(
 			if type(object_bin[obj]) == dict:
 				draw_objects_in_bin(window, object_bin[obj], flip=False)
 			else:
-				object_bin[obj].draw()	
+				object_bin[obj].draw()
 
 	if flip == True:
 		window.flip()
@@ -80,14 +84,14 @@ def draw_objects_in_bin(
 ## this makes a row of n numer of buttons that are evenly spaced
 def make_button_row(
 		window, 	# psychopy window object (required argument)
-		labels = ['A', 'B'], 
-		ypos = -100, 
+		labels = ['A', 'B'],
+		ypos = -100,
 		padding = 100,	# this determines how far apart butons will be evenly placed
-		btn_box_size = [200,75], 
-		btn_box_color = [0,0,0], 
+		btn_box_size = [200,75],
+		btn_box_color = [0,0,0],
 		btn_txt_size = 22,
 		btn_txt_color = [-1,-1,-1],
-		btn_txt_font = 'Consolas',
+		btn_txt_font = 'Arial',
 	):
 
 	btn_set = {}
@@ -99,7 +103,7 @@ def make_button_row(
 	for index, item in enumerate(labels):
 		btn_set[item] = {}
 		btn_set[item]['box'] = visual.Rect(
-				window, 
+				window,
 				width = btn_box_size[0],
 				height = btn_box_size[1],
 				fillColor = btn_box_color,
@@ -120,5 +124,24 @@ def make_button_row(
 	return btn_set
 
 
+## this makes a row of n numer of stims that are evenly spaced
+def make_stim_row(
+		window, 	# psychopy window object (required argument)
+		num_stim,
+		ypos = -100,
+	): # returns a list of psychopy visual stimuli objects
+	stim_set = {}
 
+	for i in range(num_stim):
+		print((i * window.size[0] / num_stim) + (window.size[0] / num_stim / 2))
+		stim_set[i] = visual.ImageStim(
+			window,
+			pos = [
+				(i * window.size[0] / num_stim) + (window.size[0] / num_stim / 2) - (window.size[0] / 2),
+				ypos,
+			],
+				# ^ that is just annoying trial+error math to get the buttons evenly spaced
+			interpolate = True,
+		)
 
+	return stim_set
