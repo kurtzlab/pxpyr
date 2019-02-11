@@ -37,10 +37,10 @@ def run(
 	click_instructions_txt_color = [-1,-1,-1],
 	click_instructions_position = [0, -120],
 
-	feedback_txt_position = [0, -100],
+	feedback_txt_position = [0, -90],
 	feedback_txt_color = [-1,-1,-1],
 
-	continue_txt_position = [0, -130],
+	continue_txt_position = [0, -145],
 	continue_txt_color = [-1,-1,-1],
 
 	response_btn_ypos = -280,
@@ -218,11 +218,19 @@ def run(
 			if debug_mode == False: core.wait(1)
 
 			# draw continue message
-			event_utils.draw_objects_in_bin(
-				window,
-				object_bin,
-				object_list = ['stim', 'response_btns', 'click_anywhere_msg'],
-			)
+			if supervised == True:
+				event_utils.draw_objects_in_bin(
+					window,
+					object_bin, 
+					object_list = ['stim', 'response_btns', 'feedback_msg', 'click_anywhere_msg'],
+				)
+
+			else:
+				event_utils.draw_objects_in_bin(
+					window,
+					object_bin, 
+					object_list = ['stim', 'response_btns', 'click_anywhere_msg'],
+				)
 
 			if debug_mode == False: core.wait(.35)
 
