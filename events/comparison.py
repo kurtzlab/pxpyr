@@ -49,7 +49,7 @@ def run(
 	rating_scale_position = [0,-250],
 	rating_scale_length = 1.2,
 	rating_scale_size = 1,
-	rating_scale_show_value = True,
+	rating_scale_show_value = False,
 	rating_scale_density = 100,
 
 	quit_keys = ['escape'],
@@ -87,7 +87,6 @@ def run(
 		high = rating_scale_max,
 		precision = rating_scale_density,
 		marker = rating_scale_marker,
-		markerStart = 5,
 		markerColor = rating_scaler_marker_color,
 		pos = rating_scale_position,
 		size = rating_scale_size,
@@ -152,7 +151,10 @@ def run(
 		if debug_mode == False: core.wait(.35)
 
 		# wait for user to click a response button
-		while object_bin['response_scale'].noResponse == True:
+		cursor.clickReset()
+		event.clearEvents()
+		timer.reset()
+		while object_bin['response_scale'].noResponse:
 			if event.getKeys(keyList=quit_keys):
 				print('user terminated')
 				core.quit()
@@ -162,6 +164,7 @@ def run(
 		
 		response = object_bin['response_scale'].getRating()
 		rt = object_bin['response_scale'].getRT()
+		object_bin['response_scale'].reset()
 
 		event_utils.draw_objects_in_bin(
 			window,
@@ -196,8 +199,9 @@ def run(
 				trial_num,
 				response,
 				rt,
-				*stim_list,
 			]
+			for stim in stim_list:
+				subject_data.append(stim)
 			with open(subject_info['datafile_path'], 'a') as file:
 				csv_object = csv.writer(file)
 				csv_object.writerow(subject_data)
