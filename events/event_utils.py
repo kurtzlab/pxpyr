@@ -133,7 +133,6 @@ def make_stim_row(
 	stim_set = {}
 
 	for i in range(num_stim):
-		print((i * window.size[0] / num_stim) + (window.size[0] / num_stim / 2))
 		stim_set[i] = visual.ImageStim(
 			window,
 			pos = [
