@@ -159,7 +159,7 @@ def run(
 			if debug_mode == False: core.wait(.77)
 
 			# draw click message
-			object_bin['click_msg'].setText('Is this a member of category ' + trial['presented_label'] + '??')
+			object_bin['click_msg'].setText('Is this a member of category ' + trial['presented_label'] + ' ??')
 			event_utils.draw_objects_in_bin(
 				window,
 				object_bin,
@@ -191,9 +191,15 @@ def run(
 
 			if supervised == True:
 				if correct == True:
-					object_bin['feedback_msg'].setText('Correct! This is a member of category: ' + trial['correct_label'])
+					if response == btn_map['no']:
+						object_bin['feedback_msg'].setText('Correct! ' + trial['presented_label'] + ' was  *not* the correct category.')
+					elif response == btn_map['yes']:
+						object_bin['feedback_msg'].setText('Correct! ' + trial['presented_label'] + ' was the correct category.')
 				else:
-					object_bin['feedback_msg'].setText('Incorrect... This is _not_ a member of category: ' + trial['presented_label'])
+					if response == btn_map['no']:
+						object_bin['feedback_msg'].setText('Incorrect... ' + trial['presented_label'] + ' was the correct category.')
+					elif response == btn_map['yes']:
+						object_bin['feedback_msg'].setText('Incorrect... ' + trial['presented_label'] + ' was *not* the correct category.')
 
 				# draw feedback message
 				event_utils.draw_objects_in_bin(
