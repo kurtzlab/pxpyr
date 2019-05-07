@@ -56,6 +56,26 @@ def run(
 	debug_mode = False,
 ):
 
+	feedback_correct = [
+		'msg 1',
+		'msg 2',
+		'msg 3',
+		'msg 4',
+		'msg 5',
+		'msg 6',
+	]
+
+	feedback_incorrect = [
+		'msg 1',
+		'msg 2',
+		'msg 3',
+		'msg 4',
+		'msg 5',
+		'msg 6',
+	]
+
+
+
 	# Initialize Main Psychopy win if one isn't included
 	if window == None:
 		window = event_utils.build_window()
@@ -171,9 +191,9 @@ def run(
 
 			if supervised == True:
 				if response == correct_category:
-					object_bin['feedback_msg'].setText(correct_feedback + correct_category)
+					object_bin['feedback_msg'].setText(random.choice(feedback_correct))
 				else:
-					object_bin['feedback_msg'].setText('Incorrect... This is a member of category: ' + correct_category)
+					object_bin['feedback_msg'].setText(random.choice(feedback_incorrect))
 
 				# draw feedback message
 				event_utils.draw_objects_in_bin(
